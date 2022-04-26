@@ -71,6 +71,7 @@ class Character:
         if(self.energy > 0):
             for x in range(self.stats[0]):
                 damSum += random.randint(0,self.stats[0]) + self.stats[0]
+                print(str(damSum) + " 2")
             self.energy -= 1
         else:
             print(self.name + " is out of magical energy!"+ self.name +" can't cast a spell!")
@@ -80,9 +81,8 @@ class Character:
     def doPhysicalDamage(self):
         damSum = 0
         for x in range(self.stats[1]):
-            damSum += random.randint(1,self.stats[1]) + self.stats[1]
+            damSum += random.randint(0,self.stats[1]) + self.stats[1]
             print(str(damSum) + " 1")
-        print(str(damSum))
         return damSum
 
     def heal(self, target):
