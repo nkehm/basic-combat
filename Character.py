@@ -43,10 +43,16 @@ class Character:
         return self.stats[2]
     
     def getInitiative(self):
-        return randint(1, (6+stats[1]))
+        return random.randint(1, (self.stats[1] + 6))
 
     def getName(self):
         return self.name
+
+    def getStats(self):
+        print("health: " + str(self.getHealth()) + " energy: " +
+         str(self.getEnergy()) + " defense: " + str(self.getDefense()) + " brain: " +
+          str(self.getBrain()) + " muscle: " + str(self.getMuscle()) + " spirit: " +
+           str(self.getSpirit()) + " name: " + self.getName())
 ###############################################################################
     def setBrain(self, newBrain):
         self.stats = [newBrain, self.stats[1], self.stats[2]]
@@ -62,24 +68,33 @@ class Character:
 ###############################################################################
     def doMagicDamage(self):
         damSum = 0
-        for x in range(self.stats[0]):
-            damSum += random.randint(0,self.stats[0]) + 2
-        self.energy -= 1
+        if(self.energy > 0):
+            for x in range(self.stats[0]):
+                damSum += random.randint(0,self.stats[0]) + self.stats[0]
+            self.energy -= 1
+        else:
+            print(self.name + " is out of magical energy!"+ self.name +" can't cast a spell!")
+        
         return damSum
-    
+
     def doPhysicalDamage(self):
         damSum = 0
         for x in range(self.stats[1]):
-            damSum += random.randint(0,self.stats[1])
+            damSum += random.randint(1,self.stats[1]) + self.stats[1]
+            print(str(damSum) + " 1")
+        print(str(damSum))
         return damSum
 
     def heal(self, target):
-        target.health += random.randint(0, self.stats[2])
+        healVal = random.randint(1, self.stats[2])
+        target.health += healVal
+        return healVal
 
     def takeDamage(self, damageTaken):
-        damageRecieved = damageTaken - self.stats[2]
+        damageRecieved = damageTaken - self.defense
         if(damageRecieved > 0):
             self.health -= damageRecieved
+        return damageRecieved
 ###############################################################################
     def brainCheck(self):
         result = randint(0,10)
