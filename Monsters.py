@@ -27,6 +27,7 @@ class Monsters:
     
     def setRandomMonster(self):
         self.monster = self.monsterRoster[random.randint(0,len(self.monsterRoster)-1)]
+        return self.monster
     
     def setMonster(self, monster):
         self.monster = monster
@@ -35,9 +36,20 @@ class Monsters:
         self.monsterRoster = [monster]
         self.setRandomMonster()
     
-    def refreshMonsters(self):
-        self.monsterEasy = Character(1, 1, 1, "Easy")
-        self.monsterMedium = Character(3, 3, 3, "Medium")
-        self.monsterHard = Character(5, 5, 5, "Hard")
-        self.monsterRoster = [self.monsterEasy, self.monsterMedium, self.monsterHard]
-        self.monster = self.monsterRoster[random.randint(0,2)]
+    def appendMonster(self, monster):
+        self.monsterRoster.append(monster)
+        self.setRandomMonster()
+    
+    def createRandomMonster(self):
+        self.appendMonster(Character(random.randint(1,10), random.randint(1,10), random.randint(1,10), "Random Monster"))
+
+    def makeTargetChoice(self, characterRoster):
+        highHealthRoster = []
+        for x in characterRoster:
+            if (x.getHealth() > 5):
+                highHealthRoster.append(x)
+        if(len(highHealthRoster) > 0):
+            return highHealthRoster[random.randint(0,len(characterRoster)-1)]
+        else:
+            return characterRoster[random.randint(0,len(characterRoster)-1)]
+

@@ -12,6 +12,8 @@ fighter = Character(3, 4, 3, "Fighter")
 thief = Character(3, 3, 4, "Thief")
 roster = [wizard, fighter, thief]
 
+monsterOBJ = Monsters()
+
 #begin demo fight
 def fightExample():
     #flag to start (or stop) another fight
@@ -24,7 +26,6 @@ def fightExample():
         #print the fight number ("Fight: 1")
         print("Fight: " + str(fight))
         #initialize all of the demo monsters
-        monsterOBJ = Monsters()
         monster = monsterOBJ.getMonster()
         
 
@@ -42,7 +43,7 @@ def fightExample():
             healthCheck(monster)
             
             #monster's turn
-            monsterTurn(monster)
+            monsterTurn(monster, monsterOBJ)
             
             #holding variable to be used for multiple checks
             temp = 0
@@ -68,6 +69,7 @@ def fightExample():
             #break the current loop
             break
         else:
+            monsterOBJ.setRandomMonster()
             print("Good job! You have killed " + str(monsterCounter) + " monster(s) so far!")
             print("1 to continue, 2 to quit")
             #1 to continue big loop, 2 to stop it
@@ -76,7 +78,7 @@ def fightExample():
         
         #increment fight counter
         fight += 1
-        monsterOBJ.refreshMonsters()
+        
 
 def healthCheck(monster):
     print(monster.getName() + " HP: " + str(monster.getHealth()))
@@ -85,13 +87,13 @@ def healthCheck(monster):
     print(thief.getName() + " HP: " + str(thief.getHealth()))
     print()
 
-def monsterTurn(newMonster):
+def monsterTurn(newMonster, monsterOBJ):
     monster = newMonster
     #monster randomly selects an action
     #choose: 1 = magic, 2 = physical, 3 = heal
     monsterChoice = random.randint(1,3)
     #monster randomly selects a target
-    target = roster[random.randint(0,len(roster)-1)]
+    target = monsterOBJ.makeTargetChoice(roster)
     if(monster.getHealth() > 0):
         #if magic
         if(monsterChoice == 1):
