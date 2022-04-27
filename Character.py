@@ -10,6 +10,7 @@ class Character:
     energy = stats[0] * 2
     health = stats[1] * 2
     defense = stats[2] *2
+    beans = 0
     name = None
     
     def __init__(self, newBrain, newMuscle, newSpirit, newName):
@@ -17,6 +18,7 @@ class Character:
         self.energy = newBrain * 2
         self.health = newMuscle * 2
         self.defense = newSpirit * 2
+        self.beans = 3
         self.name = newName
 ###############################################################################
     def updateStats(self, newBrain, newMuscle, newSpirit):
@@ -48,6 +50,9 @@ class Character:
 
     def getName(self):
         return self.name
+
+    def getBeans(self):
+        return self.beans
 
     def getStats(self):
         print("health: " + str(self.getHealth()) + " energy: " +
@@ -85,8 +90,13 @@ class Character:
         return damSum
 
     def heal(self, target):
-        healVal = random.randint(1, self.stats[2])
-        target.health += healVal
+        healVal = -1
+        if(self.beans > 0):
+            healVal = random.randint(1, self.stats[2])
+            target.health += healVal
+            self.beans -= 1 
+        else:
+            print(self.name + " is out of beans!")
         return healVal
 
     def takeDamage(self, damageTaken):
