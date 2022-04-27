@@ -16,7 +16,7 @@ class Character:
     def __init__(self, newBrain, newMuscle, newSpirit, newName):
         self.stats = [newBrain, newMuscle, newSpirit]
         self.energy = newBrain * 2
-        self.health = newMuscle * 2
+        self.health = newBrain + newMuscle * 2 + newSpirit
         self.defense = newSpirit * 2
         self.beans = 3
         self.name = newName
@@ -24,7 +24,7 @@ class Character:
     def updateStats(self, newBrain, newMuscle, newSpirit):
         self.stats = [newBrain, newMuscle, newSpirit]
         self.energy = newBrain * 2
-        self.health = newMuscle * 2
+        self.health = newBrain + newMuscle * 2 + newSpirit
         self.defense = newSpirit * 2
 ###############################################################################
     def getHealth(self):
@@ -75,8 +75,7 @@ class Character:
     def doMagicDamage(self):
         damSum = 0
         if(self.energy > 0):
-            for x in range(self.stats[0]):
-                damSum += random.randint(0,self.stats[0]) + self.stats[0]
+            damSum += random.randint(1,10) + self.stats[0]
             self.energy -= 1
         else:
             print(self.name + " is out of magical energy!"+ self.name +" can't cast a spell!")
@@ -84,15 +83,13 @@ class Character:
         return damSum
 
     def doPhysicalDamage(self):
-        damSum = 0
-        for x in range(self.stats[1]):
-            damSum += random.randint(0,self.stats[1]) + self.stats[1]
+        damSum = random.randint(1,10) + self.stats[1]
         return damSum
 
     def heal(self, target):
         healVal = -1
         if(self.beans > 0):
-            healVal = random.randint(1, self.stats[2])
+            healVal = random.randint(1, 4) + self.stats[2]
             target.health += healVal
             self.beans -= 1 
         else:
@@ -106,7 +103,8 @@ class Character:
         return damageRecieved
 
     def rollInitiative(self):
-        self.initiative = random.randint(1, 6)# + self.stats(1)
+        self.initiative = random.randint(1, 6) + self.stats[1]
+        return self.initiative
 ###############################################################################
     def brainCheck(self):
         result = random.randint(0,10)
@@ -131,3 +129,4 @@ class Character:
 ###############################################################################
     def levelUp(self, selection):
         self.stats[selection] += 1
+
