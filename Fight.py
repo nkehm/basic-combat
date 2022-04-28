@@ -1,11 +1,12 @@
 #imports
 from Monsters import Monsters
 from Party import Party
+from GUI import GUI
 
 #global refrence for monster
 monster = None
 roster = []
-
+gui = GUI()
 #sample characters for demo
 
 
@@ -15,6 +16,7 @@ partyOBJ = Party()
 
 #begin demo fight
 def fightExample():
+    gui.assembleAndStart()
     roster = partyOBJ.getRoster()
     #flag to start (or stop) another fight
     i = 1
@@ -24,6 +26,7 @@ def fightExample():
     monsterCounter = 0 
     while i == 1:
         #print the fight number ("Fight: 1")
+        
         print("Fight: " + str(fight))
         #initialize the demo monster
         monsterOBJ.createRandomMonster()
