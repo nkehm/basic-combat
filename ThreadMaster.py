@@ -1,4 +1,5 @@
 import threading
+import time
 from Fight import Fight
 from GUI import GUI
 
@@ -12,9 +13,33 @@ def guiStart():
 def fightStart():
     fight.fightExample()
 
-#guiStart()
-threadGui = threading.Thread(target = guiStart)
-threadFight = threading.Thread(target = fightStart)
+timerStart = time.perf_counter()
 
-threadGui.start()
+def wait():
+    time.sleep(2)
+    print("waited")
+
+""""
+threadExampleA = threading.Thread(target=wait)
+threadExampleB = threading.Thread(target=wait)
+threadExampleC = threading.Thread(target=wait)
+
+threadExampleA.start()
+threadExampleB.start()
+threadExampleC.start()
+
+#wait()
+#wait()
+#wait()
+
+
+timerEnd = time.perf_counter()
+print("Time elapsed: " + str(timerStart-timerEnd))
+"""
+
+
+
+threadFight = threading.Thread(target = fightStart)
+guiStart()
+
 threadFight.start()

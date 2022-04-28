@@ -1,68 +1,104 @@
 import tkinter as tk
+import threading
+from Fight import Fight
 
-class GUI():
 
-    window = tk.Tk()
-    input = tk.IntVar()
-    nextText = tk.StringVar()
-    box = tk.Text(window)
-    scroller = tk.Scrollbar(window)
+fight = None
 
-    def getButtonOne(self):
-        self.input = 1
-        print("1")
 
-    def getButtonTwo(self):
-        self.input = 2
-        print("2")
+window = tk.Tk()
+input = None
+nextText = None
+actionBox = tk.Text(window)
+characterBox = tk.Text(window)
+scroller = tk.Scrollbar(window)
+characterBox.insert('@0,0', "Character info here!")
+actionBox.insert('@0,0', """Welcome to basic fighting program, or bfp for short!
+Actions are going to be written in this box as they happen!
+Character info is on the left!
+When you need to make a decision, select one of the 3 numbered buttons below!
+Press start to start the fight!
+And press next to advance turns!""")
 
-    def getButtonThree(self):
-        self.input = 3
-        print("3")
+def startFight():
+    global fight
+    fight = Fight()
+    fight.fightExample()
+
+fightThread = threading.Thread(target = startFight)
+
+
+def getButtonOne():
+    global input
+    input = 1
+    print(str(input))
+
+def getButtonTwo():
+    global input
+    input = 2
+    print(str(input))
+
+def getButtonThree():
+    global input
+    input = 3
+    print(str(input))
     
-    def advance(self):
-        self.printText(self.getNextText)
+def advance():
+    setActionNextText(fight.getActionLine())
+    print(str(getNextText()))
+    actionBox.insert(tk.END, getNextText() + "\n")
+    actionBox.update()
+    fight.setE()
+    characterBox.delete('@0,0',tk.END)
+    fight.healthCheck(fight.getMonster(),fight.getPartyOBJ())
+    characterBox.insert('@0,0',fight.getCharacterLine())
+    characterBox.update()
 
-    buttonOne = tk.Button(window, text = "1", command = getButtonOne)
-    buttonTwo = tk.Button(window, text = "2", command = getButtonTwo)
-    buttonThree = tk.Button(window, text = "3", command = getButtonThree)
-    buttonNext = tk.Button(window, text = "Next", command = advance)
-    
+def startFightThread():
+    fightThread.start()
 
-    def __init__(self):
-        print("GUI INITIALIZED")
-        self.window.grid_propagate(False)
-        self.window.grid_rowconfigure(0, weight = 1)
-        self.window.grid_columnconfigure(0, weight=1)
-        self.box.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
-        self.box['yscrollcommand'] = self.scroller.set
-        self.box.configure(state = 'disabled')
-        self.scroller.grid(row=0, column =1, sticky='nsew')
+
+buttonOne = tk.Button(window, text = "1", command = getButtonOne)
+buttonTwo = tk.Button(window, text = "2", command = getButtonTwo)
+buttonThree = tk.Button(window, text = "3", command = getButtonThree)
+buttonNext = tk.Button(window, text = "Next", command = advance)
+buttonStart = tk.Button(window, text = "Start", command = startFightThread)
         
 
 
-    def getInput(self):
-        return self.input
-    
-    def assemble(self):
-        print("GUI STARTED")
-        
-        self.buttonOne.grid(row = 1,column = 0)
-        self.buttonTwo.grid(row = 2,column = 0)
-        self.buttonThree.grid(row = 3,column = 0)
-        self.buttonNext.grid(row = 4,column = 3)
+def getInput():
+    return input
 
-    def start(self):
-        self.window.mainloop()
-    
-    def printText(self, message):
-        self.box.insert(tk.END, message)
-    
-    def update(self):
-        self.box.update()
+def getNextText():
+    return nextText
 
-    def setNextText(self, nextText):
-        self.nextText = nextText
+def setActionNextText(text):
+    global nextText
+    nextText = text
+    actionBox.update()
     
-    def getNextText(self):
-        return self.nextText
+def assemble():
+    print("GUI Initialized")
+    window.geometry("900x600")
+    window.grid_propagate(False)
+    window.grid_rowconfigure(0, weight = 1)
+    window.grid_columnconfigure(0, weight=1)
+    actionBox['yscrollcommand'] = scroller.set
+    characterBox.grid(row = 0, column = 0, sticky="nsew", padx=2, pady=2)
+    actionBox.grid(row = 0, column = 1, sticky="nsew", padx=2, pady=2)
+    scroller.grid(row = 0, column = 2 , sticky='nsew')    
+    buttonOne.grid(row = 1, column = 1)
+    buttonTwo.grid(row = 2, column = 1)
+    buttonThree.grid(row = 3, column = 1)
+    buttonStart.grid(row = 3, column = 0)
+    buttonNext.grid(row = 3, column = 2)
+
+def start():
+    print("GUI Started")
+    window.mainloop()
+
+def assembleAndStart():
+    assemble()
+    start()
+
+assembleAndStart()

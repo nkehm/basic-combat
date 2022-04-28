@@ -48,6 +48,8 @@ class Monsters:
                 return 2
 
     def monsterTurn(self, newMonster, roster):
+        #arr -> [[String to be print out], roster]
+        arr = [[""],[]]
         monster = newMonster
         #monster randomly selects an action
         #choose: 1 = magic, 2 = physical, 3 = heal
@@ -59,13 +61,13 @@ class Monsters:
             if(monsterChoice == 1):
                 #calculate damage of spell
                 dam = target.takeDamage(monster.doMagicDamage())
-                print(monster.getName() + " casts a spell at " + target.getName() +"!")
+                arr[0][0] = (monster.getName() + " casts a spell at " + target.getName() +"!"+ "\n")
                 #if damage is 0 or less
                 if(dam <= 0):
-                    print("There was no effect!")
+                    arr[0][0] += ("There was no effect!"+ "\n")
                     #if damage is greater than 0
                 elif(dam > 0):
-                    print(monster.getName() + " deals " + target.getName() + " " + str(dam) + " points of damage!")
+                    arr[0][0] += (monster.getName() + " deals " + target.getName() + " " + str(dam) + " points of damage!"+ "\n")
                     if(target.getHealth() <= 0):
                         roster.remove(target)
 
@@ -73,15 +75,15 @@ class Monsters:
             elif(monsterChoice == 2):
                 #calculate damage
                 dam = target.takeDamage(monster.doPhysicalDamage())
-                print(monster.getName() + " attacks " + target.getName() + "!")
+                arr[0][0] = (monster.getName() + " attacks " + target.getName() + "!"+ "\n")
                 #if damage is 0 or less
                 if(dam <= 0):
-                    print(monster.getName() + " deal 0 points of damage!")
-                    print("There was no effect!")
+                    arr[0][0] += (monster.getName() + " deal 0 points of damage!"+ "\n")
+                    arr[0][0] += ("There was no effect!"+ "\n")
                     #if damage greater than 0
                 elif(dam > 0):
-                    print(monster.getName() + " hits " + target.getName() + "!")
-                    print(monster.getName() + " deals " + str(dam) + " points of damage!")
+                    arr[0][0] += (monster.getName() + " hits " + target.getName() + "!"+ "\n")
+                    arr[0][0] += (monster.getName() + " deals " + str(dam) + " points of damage!"+ "\n")
                     if(target.getHealth() <= 0):
                         roster.remove(target)
 
@@ -90,12 +92,13 @@ class Monsters:
                 #monster heals itself
                 healVal = monster.heal(monster)
                 if(healVal > -1):
-                    print(monster.getName() + " ate a senzu bean!")
-                    print(monster.getName() + " healed for " + str(healVal) + " points of healing!")
-                    print(monster.getName() + " has " + str(monster.getBeans()) + " senzu beans left!")
+                    arr[0][0] = (monster.getName() + " ate a senzu bean!")
+                    arr[0][0] += (monster.getName() + " healed for " + str(healVal) + " points of healing!" + "\n")
+                    arr[0][0] += (monster.getName() + " has " + str(monster.getBeans()) + " senzu beans left!"+ "\n")
                 else:
-                    print(monster.getName() + " has " + str(monster.getBeans()) + " senzu beans left!")
-                    print(monster.getName() + " can't heal!")    
+                    arr[0][0] = (monster.getName() + " has " + str(monster.getBeans()) + " senzu beans left!"+ "\n")
+                    arr[0][0] += (monster.getName() + " can't heal!")    
             
-            print()
-            return roster.getRoster()
+            arr[0][0] += "\n"
+            arr[1] = roster.getRoster()
+            return arr
