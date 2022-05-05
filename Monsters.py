@@ -6,6 +6,7 @@ class Monsters:
     
     def __init__(self):
         self.createRandomMonster()
+        print("Monster Initialized")
     
     def getMonster(self):
         return self.monster
@@ -18,7 +19,6 @@ class Monsters:
         muscle = random.randint(1,5)
         spirit = random.randint(1,5)
         sum = brain + muscle +spirit
-        
         if (sum  < 5):
             name = "easy"
         elif (sum < 11 and sum > 4):
@@ -26,6 +26,7 @@ class Monsters:
         else:
             name = "hard"
         self.monster = Character(brain, muscle, spirit, name)
+        return self.getMonster()
 
     def makeTargetChoice(self, partyOBJ):
         highHealthRoster = []

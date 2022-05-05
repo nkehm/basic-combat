@@ -10,6 +10,7 @@ class Party:
         thief = Character(3, 3, 4, "Thief")
         self.roster = [wizard, fighter, thief]
         self.partyLen = len(self.roster)
+        print("Party Initialized")
     
     def getRoster(self):
         return self.roster

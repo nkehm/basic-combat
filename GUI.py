@@ -1,9 +1,11 @@
 import tkinter as tk
 import threading
-from Fight import Fight
+#from Fight import Fight
+from Battle import Battle
 
 
-fight = None
+#fight = None
+battle = None
 
 
 window = tk.Tk()
@@ -17,15 +19,17 @@ actionBox.insert('@0,0', """Welcome to basic fighting program, or bfp for short!
 Actions are going to be written in this box as they happen!
 Character info is on the left!
 When you need to make a decision, select one of the 3 numbered buttons below!
-Press start to start the fight!
 And press next to advance turns!""")
 
-def startFight():
-    global fight
+def startBattle():
+    """global fight
     fight = Fight()
-    fight.fightExample()
+    fight.fightExample()"""
+    global battle
+    battle = Battle()
+    battle.start()
 
-fightThread = threading.Thread(target = startFight)
+battleThread = threading.Thread(target = startBattle)
 
 
 def getButtonOne():
@@ -50,19 +54,18 @@ def advance():
     actionBox.update()
     fight.setE()
     characterBox.delete('@0,0',tk.END)
-    fight.healthCheck(fight.getMonster(),fight.getPartyOBJ())
-    characterBox.insert('@0,0',fight.getCharacterLine())
+    characterBox.insert('@0,0',battle.getHealth())
     characterBox.update()
 
-def startFightThread():
-    fightThread.start()
+#def startFightThread():
+#    "fightThread.start()"
 
 
 buttonOne = tk.Button(window, text = "1", command = getButtonOne)
 buttonTwo = tk.Button(window, text = "2", command = getButtonTwo)
 buttonThree = tk.Button(window, text = "3", command = getButtonThree)
 buttonNext = tk.Button(window, text = "Next", command = advance)
-buttonStart = tk.Button(window, text = "Start", command = startFightThread)
+#buttonStart = tk.Button(window, text = "Start", command = startFightThread)
         
 
 
@@ -73,9 +76,9 @@ def getNextText():
     return nextText
 
 def setActionNextText(text):
-    global nextText
+    """global nextText
     nextText = text
-    actionBox.update()
+    actionBox.update()"""
     
 def assemble():
     print("GUI Initialized")
@@ -90,8 +93,9 @@ def assemble():
     buttonOne.grid(row = 1, column = 1)
     buttonTwo.grid(row = 2, column = 1)
     buttonThree.grid(row = 3, column = 1)
-    buttonStart.grid(row = 3, column = 0)
+    #buttonStart.grid(row = 3, column = 0)
     buttonNext.grid(row = 3, column = 2)
+    battleThread.start()
 
 def start():
     print("GUI Started")
