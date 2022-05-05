@@ -48,11 +48,11 @@ def getButtonThree():
     print(str(input))
     
 def advance():
-    setActionNextText(fight.getActionLine())
+    setActionNextText(battle.getText())
     print(str(getNextText()))
-    actionBox.insert(tk.END, getNextText() + "\n")
+    actionBox.insert(tk.END, str(getNextText()) + "\n")
     actionBox.update()
-    fight.setE()
+    battle.setE()
     characterBox.delete('@0,0',tk.END)
     characterBox.insert('@0,0',battle.getHealth())
     characterBox.update()

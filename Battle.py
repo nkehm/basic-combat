@@ -1,9 +1,10 @@
 from Party import Party 
 from Monsters import Monsters
+import threading
 
 class Battle:
     #The readout for the GUI
-    text = ""
+    text = "peen"
     #The user input from the GUI
     input = -1
     #The monster object
@@ -16,6 +17,8 @@ class Battle:
     party  = partyOBJ.getRoster()
     #A long string representation of the monster and party members hp's
     health = ""
+    #waiting event
+    e = threading.Event()
 
 
     def __init__(self):
@@ -28,9 +31,19 @@ class Battle:
         self.updateHealth()
         return self.health
 
-    def setText(self, input):
+    def setInput(self, input):
         self.input = input
         return input
+
+    def setText(self, text):
+        self.text = text
+        return text
+
+    def setE(self):
+        self.e.set() 
+
+    def clearE(self):
+        self.e.clear()
 
     def newMonster(self):
         self.monster = self.monsterOBJ.createRandomMonster()
@@ -46,16 +59,35 @@ class Battle:
         print("Battle Started")
         #flag for starting game
         go = 0
+        #fight number counter
+        fightCount = 0
         #starts battle
         while go == 0:
+            self.e.wait()
+            self.clearE()
+            print("F")
+            self.setText("Round: " + str(fightCount) + "\n")
+            self.e.wait()
+            self.clearE()
+            print("W")
             #while the monster is alive
-            while self.monster.getHealth()>0:
+            while self.monster.getHealth()>0 and go == 0:
                 #flag for if the party goes first (True) or the monster goes first (False)
-                initiative = self.RollOff()
-                if(self.RollOff == True):
+                initiative = self.rollOff()
+                if(initiative == True):
                     self.partyTurn()
-                    self.monseterTurn()
+                    self.monsterTurn()
                 else:
                     self.monsterTurn()
                     self.partyTurn()
+                go =1
+    
+    def rollOff(self):
+        print("rolled")
+
+    def partyTurn(self):
+        print("party turn")
+    
+    def monsterTurn(self):
+        print("monster turn")
                 
